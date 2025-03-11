@@ -1,0 +1,17 @@
+# Python dirs/files
+build/
+**/.ipynb_checkpoints/
+**/__pycache__/
+.ruff_cache
+venv
+.venv
+**/*.egg-info
+.env
+
+# R dirs/files
+# Ignore all files in renv except activate.R
+renv/*
+!renv/activate.R
+.Rproj.user/
+.Rhistory
+.RData

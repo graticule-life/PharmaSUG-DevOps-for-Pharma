@@ -1,0 +1,58 @@
+# The only edits here should be under dependencies
+# Rerun `uv pip install -e .` to add new depencies
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pharmasug-2025-sample"
+version = "0.0.1"
+description = "A template repository for data pipelines using Jupyter notebooks with Papermill"
+authors = [
+    { name = "Graticule", email = "example@graticule.com" }
+]
+license = { text = "MIT" }
+requires-python = ">= 3.11"
+dependencies = [
+    "papermill==2.6.0",
+    "jupysql==0.10.12",
+    "numpy==2.1.1",
+    "pandas==2.2.2",
+    "ipykernel==6.29.5",
+    "jupytext",
+    "nbconvert",
+    "prettytable==3.11.0",
+]
+
+[project.optional-dependencies]
+# dependencies to improve code quality
+dev = [
+    "isort>=5.11.2",
+    "pre-commit==3.8.0",
+    "nbstripout==0.7.1",
+    "nb-clean==3.3.0",
+    "ruff==0.6.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["source"]
+include = ["notebook.helpers*"]
+
+[tool.jupytext]
+# avoid auto-commenting % and %% magics as comment markers were being repeated
+comment_magics = false
+
+[tool.jupytext.formats]
+# Jupytext configuration for pairing notebooks with Python scripts
+"source/notebooks/" = "py:percent"
+
+[tool.ruff.lint]
+# Ruff does basic code cleaning; the list below extends Ruff's basic cleaning
+# no need to edit this
+extend-select = [
+    "I001",  # Enable import sorting
+    "E501",  # Line length (black uses 88 by default)
+    "W291",  # Trailing whitespace
+    "W293",  # Blank line contains whitespace
+    ]
+
