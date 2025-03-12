@@ -11,9 +11,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Set environment variables
+        run: |
+          echo "GIT_COMMIT=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+          echo "NAME=pharmasug-demo" >> $GITHUB_ENV
+          echo "REPO=graticule" >> $GITHUB_ENV
 
       - name: Build Docker image
         run: docker compose build base-image
+        env:
+          GIT_COMMIT: ${{ env.GIT_COMMIT }}
+          NAME: ${{ env.NAME }}
+          REPO: ${{ env.REPO }}
 
       - name: Setup renv dirs
         run: |    
@@ -54,10 +64,6 @@ jobs:
           key: renv-${{ runner.os }}-R${{ steps.get-version.outputs.r-version }}-${{ hashFiles('renv.lock') }}
           restore-keys: |
             renv-${{ runner.os }}-R${{ steps.get-version.outputs.r-version }}-
-      
-      - name: Set environment variables
-        run: |
-          echo "GIT_COMMIT=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
   
       - name: Run notebook
         run: docker compose up --exit-code-from run-notebook
