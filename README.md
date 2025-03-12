@@ -70,23 +70,14 @@ Action:
 
 ## Local Docker build and run
 
-Create an `.env` file with the following variables:
-```
-PR_DERIVED_SCHEMA_NAME=
-PR_NUMBER=
-DATABASE=
-NB_PATH="source"
-```
-
-Source the `.env` file
+Set git commit hash
 ```bash
-source .env
+export GIT_COMMIT=$(git rev-parse HEAD)
 ```
 
-
-Set up for interactive development
+Build docker image:
 ```bash
-export GCR_TAG=$(git rev-parse HEAD)
+docker compose build base-image
 ```
 
 Run in interactive mode:

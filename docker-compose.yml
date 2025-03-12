@@ -1,24 +1,26 @@
 x-common-config: &common-config
-  image: ghcr.io/${REPO}/${NAME}:${GCR_TAG}
+  image: ghcr.io/${REPO}/${NAME}:${GIT_COMMIT}
   working_dir: /home/jovyan/workspace
   environment: &common-env
-    NB_PATH: /home/jovyan/workspace/source
     RENV_PATHS_CACHE: /home/jovyan/workspace/renv/library/
+    # set defaults for REPO, NAME, and GIT_COMMIT
+    REPO: ${REPO-graticule}
+    NAME: ${NAME-pharmasug-demo}
+    GIT_COMMIT: ${GIT_COMMIT-latest}
 
 x-base-image-build: &base-image-build
   context: .
   platforms:
     - linux/amd64
   args:
-    GIT_COMMIT: ${GCR_TAG}
+    GIT_COMMIT: ${GIT_COMMIT}
   tags:
-    - "ghcr.io/${REPO}/${NAME}:latest"
-    - "ghcr.io/${REPO}/${NAME}:${GCR_TAG}"
+    - "ghcr.io/${REPO}/${NAME}:${GIT_COMMIT}"
 
 x-notebook-cmd: &notebook-cmd |
   /bin/bash -c "set -e && \
   make setup && \
-  papermill ${NB_PATH}/papermill.ipynb output/notebooks/papermill.ipynb --kernel python3"
+  papermill source/papermill.ipynb output/notebooks/papermill.ipynb --kernel python3"
 
 services:
   base-image:
@@ -37,7 +39,9 @@ services:
   ### Local commands ###
   local-interactive:
     <<: *common-config
-    env_file: .env
+    build: *base-image-build
+    environment:
+      <<: *common-env
     command: /bin/bash
     volumes:
       - .:/home/jovyan/workspace
@@ -47,7 +51,8 @@ services:
   local-notebook:
     <<: *common-config
     build: *base-image-build
-    env_file: .env
+    environment:
+      <<: *common-env
     command: *notebook-cmd
     volumes:
       - .:/home/jovyan/workspace

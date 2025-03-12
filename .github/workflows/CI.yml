@@ -1,0 +1,65 @@
+name: Docker Build CI
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker-compose build base-image
+
+      - name: Setup renv dirs
+        run: |    
+          # Create main renv directories
+          sudo mkdir -p ${{ github.workspace }}/renv/library
+          sudo mkdir -p ${{ runner.temp }}/renv/library
+  
+          # Set permissions for all renv directories
+          sudo chown -R $(id -u):$(id -g) ${{ runner.temp }}/renv
+          sudo chown -R $(id -u):$(id -g) ${{ github.workspace }}/renv
+          
+          # Ensure directories are writable
+          sudo chmod -R 777 ${{ runner.temp }}/renv
+          sudo chmod -R 777 ${{ github.workspace }}/renv
+
+          # Change ownership of the workspace to the docker user (jovyan)
+          sudo chown 1000:100 -R ${{ github.workspace }}
+      
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.4'
+      
+      - name: Get R
+        id: get-version
+        run: |
+          cat("r-version=", gsub("R version ", "", R.Version()$version.string), "\n", file = Sys.getenv("GITHUB_OUTPUT"), sep = "", append = TRUE)
+        shell: Rscript {0}
+
+      - name: Restore Renv package cache
+        id: restore-renv-pkgs
+        if: ${{ inputs.bypass-cache != 'true' }}
+        uses: actions/cache@v4
+        # Using RENV_PATHS_CACHE defined in docker-compose.yml
+        with:
+          path: |
+            ${{ runner.temp }}/renv/library/
+          key: renv-${{ runner.os }}-R${{ steps.get-version.outputs.r-version }}-${{ hashFiles('renv.lock') }}
+          restore-keys: |
+            renv-${{ runner.os }}-R${{ steps.get-version.outputs.r-version }}-
+      
+      - name: Set environment variables
+        run: |
+          echo "GIT_COMMIT=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+  
+      - name: Run notebook
+        run: docker compose up --exit-code-from run-notebook
+        env:
+          GIT_COMMIT: ${{ env.GIT_COMMIT }}
