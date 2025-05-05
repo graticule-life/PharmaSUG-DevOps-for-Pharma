@@ -3,6 +3,7 @@ x-common-config: &common-config
   working_dir: /home/jovyan/workspace
   environment: &common-env
     RENV_PATHS_CACHE: /home/jovyan/workspace/renv/library/
+    RENV_PATHS_LIBRARY_ROOT: /home/jovyan/workspace/renv/library/
     # set defaults for REPO, NAME, and GIT_COMMIT
     REPO: ${REPO-graticule}
     NAME: ${NAME-pharmasug-demo}
@@ -34,7 +35,7 @@ services:
     command: *notebook-cmd
     volumes:
       - .:/home/jovyan/workspace
-      - ./renv/library:/home/jovyan/workspace/renv/library:rw
+      - /home/runner/work/_temp/renv/library:/home/jovyan/workspace/renv/library:rw
 
   ### Local commands ###
   local-interactive:
@@ -56,4 +57,3 @@ services:
     command: *notebook-cmd
     volumes:
       - .:/home/jovyan/workspace
-      - ./renv/library:/home/jovyan/workspace/renv/library:rw
