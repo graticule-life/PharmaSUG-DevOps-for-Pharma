@@ -34,7 +34,7 @@ services:
     command: *notebook-cmd
     volumes:
       - .:/home/jovyan/workspace
-      - /home/runner/work/_temp/renv/library:/home/jovyan/workspace/renv/library:rw
+      - ./renv/library:/home/jovyan/workspace/renv/library:rw
 
   ### Local commands ###
   local-interactive:
@@ -56,3 +56,4 @@ services:
     command: *notebook-cmd
     volumes:
       - .:/home/jovyan/workspace
+      - ./renv/library:/home/jovyan/workspace/renv/library:rw
