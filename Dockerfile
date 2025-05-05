@@ -44,3 +44,6 @@ RUN R -e "install.packages(c('utf8', 'IRkernel'), repos='https://cloud.r-project
 USER ${NB_USER}
 
 WORKDIR /home/${NB_USER}
+
+COPY --chown=${NB_USER} ./pyproject.toml ./
+COPY --chown=${NB_USER} ./source ./source
