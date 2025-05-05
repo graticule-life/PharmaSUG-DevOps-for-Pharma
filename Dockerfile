@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/minimal-notebook:2025-05-05
+FROM quay.io/jupyter/minimal-notebook:x86_64-2025-04-30
 
 USER root
 
@@ -35,10 +35,11 @@ ARG R_VERSION=4.4.2-1.2404.0
 RUN apt-get update -y && \
   apt-get install -y --no-install-recommends \
   r-base-core=${R_VERSION} \
-  r-base-dev=${R_VERSION} \
-  # ipython R kernel with specific version
-  r-cran-irkernel=1.3.2-2 && \
+  r-base-dev=${R_VERSION} && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install R packages using R's package manager
+RUN R -e "install.packages(c('utf8', 'IRkernel'), repos='https://cloud.r-project.org/')"
 
 USER ${NB_USER}
 
