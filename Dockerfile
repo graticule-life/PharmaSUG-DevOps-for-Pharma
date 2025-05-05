@@ -36,8 +36,8 @@ RUN apt-get update -y && \
   apt-get install -y --no-install-recommends \
   r-base-core=${R_VERSION} \
   r-base-dev=${R_VERSION} \
-  # ipython R kernel
-  r-cran-irkernel && \
+  # ipython R kernel with specific version
+  r-cran-irkernel=1.3.2-1 && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
 USER ${NB_USER}
