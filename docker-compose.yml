@@ -49,11 +49,11 @@ services:
     tty: true
     stdin_open: true
   
-  local-notebook:
-    <<: *common-config
-    build: *base-image-build
-    environment:
-      <<: *common-env
-    command: *notebook-cmd
-    volumes:
-      - .:/home/jovyan/workspace
+  # local-notebook:
+  #   <<: *common-config
+  #   build: *base-image-build
+  #   environment:
+  #     <<: *common-env
+  #   command: *notebook-cmd
+  #   volumes:
+  #     - .:/home/jovyan/workspace
