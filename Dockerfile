@@ -19,7 +19,8 @@ RUN apt-get update -y && \
   unixodbc-dev \
   zlib1g-dev \
   gnupg2 \
-  jq && \
+  jq \
+  libzmq3-dev && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN \
