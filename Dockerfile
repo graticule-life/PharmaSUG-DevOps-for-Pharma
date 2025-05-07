@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/minimal-notebook:2025-03-10
+FROM quay.io/jupyter/minimal-notebook:x86_64-2025-04-30
 
 USER root
 
@@ -19,7 +19,8 @@ RUN apt-get update -y && \
   unixodbc-dev \
   zlib1g-dev \
   gnupg2 \
-  jq && \
+  jq \
+  libzmq3-dev && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN \
@@ -35,11 +36,15 @@ ARG R_VERSION=4.4.2-1.2404.0
 RUN apt-get update -y && \
   apt-get install -y --no-install-recommends \
   r-base-core=${R_VERSION} \
-  r-base-dev=${R_VERSION} \
-  # ipython R kernel
-  r-cran-irkernel && \
+  r-base-dev=${R_VERSION} && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install R packages using R's package manager
+RUN R -e "install.packages(c('utf8', 'IRkernel'), repos='https://cloud.r-project.org/')"
 
 USER ${NB_USER}
 
 WORKDIR /home/${NB_USER}
+
+COPY --chown=${NB_USER} ./pyproject.toml ./
+COPY --chown=${NB_USER} ./source ./source
