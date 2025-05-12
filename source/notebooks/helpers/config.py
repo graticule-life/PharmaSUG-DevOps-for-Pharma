@@ -25,3 +25,4 @@ NOTEBOOK_DIR = SOURCE_DIR / "notebooks"
 
 # paths expected by CI/CD
 OUTPUT_NB_PATH = ROOT_DIR / "output" / "notebooks"
+OUTPUT_ARTIFACT_PATH = ROOT_DIR / "output"/ "artifacts"
