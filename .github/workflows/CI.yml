@@ -73,6 +73,6 @@ jobs:
             renv-${{ runner.os }}-R${{ steps.get-version.outputs.r-version }}-
   
       - name: Run notebook
-        run: docker compose up --exit-code-from run-notebook
+        run: docker compose up run-notebook --exit-code-from run-notebook
         env:
           GIT_COMMIT: ${{ env.GIT_COMMIT }}
