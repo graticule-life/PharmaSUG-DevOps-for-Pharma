@@ -15,7 +15,10 @@ DATABASE_NAME = 'sample.sqlite'
 TABLE_NAME = 'patients'
 DATA_CONFIG = {
     'PATIENT_ID': 1000,       # Starting sequence number
-    'AGE': [12, 89],          
+    'AGE': [12, 89],   
+    'GENDER': ['M', 'F'],
+    'RACE': ['White', 'Black', 'Asian', 'Other'],
+    'ETHNICITY': ['Hispanic', 'Non-Hispanic'],
     'HOSPITAL_DATE': [datetime(2022, 1, 1), datetime(2025, 1, 1)], 
     'HOSPITALIZATION_COUNT': [1, 10],  
     'IS_SMOKER': bool
@@ -32,10 +35,12 @@ def generate_value(column_name, config):
         if isinstance(value_config[0], datetime):  # Date range
             days_between = (value_config[1] - value_config[0]).days
             random_days = random.randint(0, days_between)
-            random_date =value_config[0] + timedelta(days=random_days)
+            random_date = value_config[0] + timedelta(days=random_days)
             return random_date.date()
-        else:  # Numeric range
+        elif isinstance(value_config[0], (int, float)):  # Numeric range
             return random.randint(value_config[0], value_config[1])
+        else:  # String list
+            return random.choice(value_config)
     
     elif value_config == bool:
         return random.choice([True, False])
