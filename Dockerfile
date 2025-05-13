@@ -39,8 +39,25 @@ RUN apt-get update -y && \
   r-base-dev=${R_VERSION} && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install R packages using R's package manager
-RUN R -e "install.packages(c('utf8', 'IRkernel'), repos='https://cloud.r-project.org/')"
+# Set up Python and R kernels
+WORKDIR /opt/conda/share/jupyter/kernels
+RUN jq '.display_name = "python3"' python3/kernel.json >> python3/tmp.json && mv python3/tmp.json python3/kernel.json
+
+# Install R packages in dependency order
+RUN Rscript -e "install.packages(c('cli', 'lifecycle'), repos='https://cloud.r-project.org/')" && \
+    Rscript -e "install.packages(c('vctrs', 'pillar'), repos='https://cloud.r-project.org/')" && \
+    Rscript -e "install.packages(c('utf8', 'jsonlite', 'repr', 'IRdisplay', 'uuid'), repos='https://cloud.r-project.org/')" && \
+    Rscript -e "install.packages('IRkernel', repos='https://cloud.r-project.org/')" && \
+    Rscript -e "if (!require('IRkernel')) stop('Failed to install IRkernel')"
+
+RUN Rscript -e "if (!require('IRkernel')) stop('IRkernel not found')" && \
+    Rscript -e 'IRkernel::installspec(name="ir", displayname="R 4.4.2")'
+
+# Set up Jupyter config directory
+RUN mkdir -p /home/${NB_USER}/.local/share/jupyter && \
+    mkdir -p /home/${NB_USER}/.ipython && \
+    chown -R ${NB_USER}:users /home/${NB_USER}/.local && \
+    chown -R ${NB_USER}:users /home/${NB_USER}/.ipython
 
 USER ${NB_USER}
 
