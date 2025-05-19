@@ -35,7 +35,7 @@ output_file_path = config$OUTPUT_ARTIFACT_PATH
 Load in data from python step 
 ```{r}
 
-conn = dbConnect(RSQLite::SQLite(), "sample.sqlite")
+conn = dbConnect(RSQLite::SQLite(), here("sample.sqlite"))
 
 patients = dbGetQuery(conn, "SELECT * FROM filtered_patients")
 
