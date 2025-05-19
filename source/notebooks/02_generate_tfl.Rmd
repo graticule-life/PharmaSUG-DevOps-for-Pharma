@@ -44,7 +44,7 @@ patients = dbGetQuery(conn, "SELECT * FROM filtered_patients")
 Create output table using tbl_summary 
 ```{r}
 output_table = patients |>
-  select(AGE, IS_SMOKER, HOSPITALIZATION_COUNT) |>
+  select(AGE, GENDER, RACE, ETHNICITY, IS_SMOKER, HOSPITALIZATION_COUNT) |>
   tbl_summary() |>
   #convert to flex table for officer output 
   as_flex_table()
