@@ -37,7 +37,7 @@ Load in data from python step
 
 conn = dbConnect(RSQLite::SQLite(), "sample.sqlite")
 
-patients = dbGetQuery(conn, "SELECT * FROM patients")
+patients = dbGetQuery(conn, "SELECT * FROM filtered_patients")
 
 ```
 
