@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>01_inclusion</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>02_generate_tfl</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7510,7 +7510,7 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=75699d9c">
+<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_injected-parameters" id="cell-id=8453be95">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7518,14 +7518,29 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">notebooks.helpers.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">STUDY_START_DATE</span><span class="p">,</span> <span class="n">STUDY_END_DATE</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">notebooks.helpers.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_engine</span>
+<div class="highlight hl-r"><pre><span></span><span class="c1"># Parameters</span>
+<span class="n">STUDY_START_DATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"2024-01-01"</span>
+<span class="n">STUDY_END_DATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"2024-12-31"</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e51f0f2a">
+</div>---
+title: "02_generate_tfl.Rmd"
+output: html_document
+---
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9f41c8b0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Load in necessary libraries</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f336db61">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7533,13 +7548,70 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">engine</span> <span class="o">=</span> <span class="n">get_engine</span><span class="p">()</span>
+<div class="highlight hl-r"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">DBI</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">RSQLite</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">gtsummary</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">here</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">reticulate</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">officer</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">flextable</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ce352a4b">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>here() starts at /home/jovyan/workspace
+
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>
+Attaching package: ‘flextable’
+
+
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>The following object is masked from ‘package:gtsummary’:
+
+    continuous_summary
+
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ff891e73">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>In order to load in the config file, which has the file paths listed for artifact (tables listings and figures) output, we need to setup a python virtual environment</p>
+<p>In the terminal run (only need to run once when setting up R session):
+<code>uv venv -p 3.11</code></p>
+<p>In the R console (only need to run once when setting up R session)
+<code>reticulate::use_virtualenv("./.venv")</code></p>
+<p>Continue setting up reticulate and load in config variables</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=49e2ffea">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7547,8 +7619,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> sql
-<span class="o">%</span><span class="k">sql</span> engine
+<div class="highlight hl-r"><pre><span></span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">import_from_path</span><span class="p">(</span><span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"config"</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">here</span><span class="p">(</span><span class="s">"source"</span><span class="p">,</span><span class="w"> </span><span class="s">"notebooks"</span><span class="p">,</span><span class="w"> </span><span class="s">"helpers"</span><span class="p">))</span>
+<span class="n">output_file_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="o">$</span><span class="n">OUTPUT_ARTIFACT_PATH</span>
 </pre></div>
 </div>
 </div>
@@ -7560,21 +7632,39 @@ a.anchor-link {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>There's a new jupysql version available (0.11.1), you're running 0.10.12. To upgrade: pip install jupysql --upgrade
-Deploy FastAPI apps for free on Ploomber Cloud! Learn more: https://ploomber.io/s/signup
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>Warning message in poetry_config(required_module):
+“This project appears to use Poetry for Python dependency management.
+However, the 'poetry' command line tool is not available.
+reticulate will be unable to activate this project.
+Please ensure that 'poetry' is available on the PATH.”
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<span style="None">The 'toml' package isn't installed. To load settings from pyproject.toml or ~/.jupysql/config, install with: pip install toml</span>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Error in python_config_impl(python) : 
+  Error running '/home/jovyan/workspace/venv/bin/python': No such file.
+The Python installation used to create the virtualenv has been moved or removed:
+  '/opt/homebrew/Cellar/python@3.12/3.12.8/Frameworks/Python.framework/Versions/3.12/bin'
+</pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_parameters" id="cell-id=d6b985c4">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a9198530">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Load in data from python step</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=decebdeb">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7582,15 +7672,26 @@ Deploy FastAPI apps for free on Ploomber Cloud! Learn more: https://ploomber.io/
 <div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Using dates defined in the config</span>
-<span class="n">STUDY_START_DATE</span> <span class="o">=</span> <span class="n">STUDY_START_DATE</span>
-<span class="n">STUDY_END_DATE</span> <span class="o">=</span> <span class="n">STUDY_END_DATE</span>
+<div class="highlight hl-r"><pre><span></span><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">dbConnect</span><span class="p">(</span><span class="n">RSQLite</span><span class="o">::</span><span class="nf">SQLite</span><span class="p">(),</span><span class="w"> </span><span class="s">"sample.sqlite"</span><span class="p">)</span>
+
+<span class="n">patients</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">dbGetQuery</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">"SELECT * FROM filtered_patients"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_injected-parameters" id="cell-id=33680787">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=752b855c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Create output table using tbl_summary</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=064768ab">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7598,15 +7699,28 @@ Deploy FastAPI apps for free on Ploomber Cloud! Learn more: https://ploomber.io/
 <div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Parameters</span>
-<span class="n">STUDY_START_DATE</span> <span class="o">=</span> <span class="s2">"2024-01-01"</span>
-<span class="n">STUDY_END_DATE</span> <span class="o">=</span> <span class="s2">"2024-12-31"</span>
+<div class="highlight hl-r"><pre><span></span><span class="n">output_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="n">AGE</span><span class="p">,</span><span class="w"> </span><span class="n">GENDER</span><span class="p">,</span><span class="w"> </span><span class="n">RACE</span><span class="p">,</span><span class="w"> </span><span class="n">ETHNICITY</span><span class="p">,</span><span class="w"> </span><span class="n">IS_SMOKER</span><span class="p">,</span><span class="w"> </span><span class="n">HOSPITALIZATION_COUNT</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">tbl_summary</span><span class="p">()</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="c1">#convert to flex table for officer output </span>
+<span class="w">  </span><span class="nf">as_flex_table</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=363f29a2">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=79be5255">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Use officer to create output word file</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a0440e02">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7614,282 +7728,14 @@ Deploy FastAPI apps for free on Ploomber Cloud! Learn more: https://ploomber.io/
 <div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span><span class="w"> </span>
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<div class="highlight hl-r"><pre><span></span><span class="n">output_title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">'Table 1. Patient characteristics'</span>
+
+<span class="n">output_doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">read_docx</span><span class="p">()</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">body_add</span><span class="p">(</span><span class="n">output_title</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span>
+<span class="w">  </span><span class="nf">body_add_flextable</span><span class="p">(</span><span class="n">output_table</span><span class="p">)</span><span class="w"> </span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">output_doc</span><span class="p">,</span><span class="w"> </span><span class="nf">file.path</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span><span class="w"> </span><span class="s">'patient_characteristics_tables.docx'</span><span class="p">))</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<span style="None">Running query in 'sqlite:////home/jovyan/workspace/sample.sqlite'</span>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<table>
-<thead>
-<tr>
-<th>PATIENT_ID</th>
-<th>AGE</th>
-<th>GENDER</th>
-<th>RACE</th>
-<th>ETHNICITY</th>
-<th>HOSPITAL_DATE</th>
-<th>HOSPITALIZATION_COUNT</th>
-<th>IS_SMOKER</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1000</td>
-<td>31</td>
-<td>M</td>
-<td>White</td>
-<td>Non-Hispanic</td>
-<td>2022-01-23</td>
-<td>2</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1001</td>
-<td>13</td>
-<td>F</td>
-<td>White</td>
-<td>Hispanic</td>
-<td>2022-07-28</td>
-<td>3</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1002</td>
-<td>28</td>
-<td>F</td>
-<td>White</td>
-<td>Non-Hispanic</td>
-<td>2022-10-21</td>
-<td>7</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1003</td>
-<td>88</td>
-<td>M</td>
-<td>Black</td>
-<td>Hispanic</td>
-<td>2024-10-13</td>
-<td>10</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1004</td>
-<td>45</td>
-<td>M</td>
-<td>Other</td>
-<td>Hispanic</td>
-<td>2023-08-23</td>
-<td>10</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=01a97b6c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
-<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">filtered_patients</span><span class="p">;</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">filtered_patients</span><span class="w"> </span><span class="k">AS</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">HOSPITAL_DATE</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">'{{STUDY_START_DATE}}'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">'{{STUDY_END_DATE}}'</span><span class="p">;</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<span style="None">Running query in 'sqlite:////home/jovyan/workspace/sample.sqlite'</span>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<table>
-<thead>
-<tr>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5b337d52">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT * FROM filtered_patients;
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<span style="None">Running query in 'sqlite:////home/jovyan/workspace/sample.sqlite'</span>
-</div>
-</div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<table>
-<thead>
-<tr>
-<th>PATIENT_ID</th>
-<th>AGE</th>
-<th>GENDER</th>
-<th>RACE</th>
-<th>ETHNICITY</th>
-<th>HOSPITAL_DATE</th>
-<th>HOSPITALIZATION_COUNT</th>
-<th>IS_SMOKER</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1003</td>
-<td>88</td>
-<td>M</td>
-<td>Black</td>
-<td>Hispanic</td>
-<td>2024-10-13</td>
-<td>10</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1005</td>
-<td>52</td>
-<td>F</td>
-<td>Asian</td>
-<td>Hispanic</td>
-<td>2024-06-09</td>
-<td>5</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1007</td>
-<td>37</td>
-<td>M</td>
-<td>Other</td>
-<td>Hispanic</td>
-<td>2024-08-29</td>
-<td>10</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1008</td>
-<td>62</td>
-<td>F</td>
-<td>White</td>
-<td>Non-Hispanic</td>
-<td>2024-05-06</td>
-<td>6</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1010</td>
-<td>34</td>
-<td>F</td>
-<td>Other</td>
-<td>Non-Hispanic</td>
-<td>2024-12-30</td>
-<td>10</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1012</td>
-<td>26</td>
-<td>F</td>
-<td>Other</td>
-<td>Non-Hispanic</td>
-<td>2024-09-03</td>
-<td>9</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1013</td>
-<td>69</td>
-<td>F</td>
-<td>Asian</td>
-<td>Hispanic</td>
-<td>2024-02-01</td>
-<td>6</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1014</td>
-<td>32</td>
-<td>M</td>
-<td>Asian</td>
-<td>Non-Hispanic</td>
-<td>2024-01-11</td>
-<td>4</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1015</td>
-<td>87</td>
-<td>M</td>
-<td>Asian</td>
-<td>Non-Hispanic</td>
-<td>2024-01-12</td>
-<td>5</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1021</td>
-<td>66</td>
-<td>M</td>
-<td>Asian</td>
-<td>Non-Hispanic</td>
-<td>2024-12-28</td>
-<td>2</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<span style="font-style:italic;text-align:center;">Truncated to <a href="https://jupysql.ploomber.io/en/latest/api/configuration.html#displaylimit">displaylimit</a> of 10.</span>
 </div>
 </div>
 </div>

@@ -35,6 +35,7 @@ services:
     command: *notebook-cmd
     volumes:
       - .:/home/jovyan/workspace
+      - ${PWD}/sample.sqlite:/home/jovyan/workspace/sample.sqlite:rw
       - ${PWD}/renv/library:/home/jovyan/workspace/renv/library:rw
 
   ### Local commands ###

@@ -35,16 +35,16 @@ output_file_path = config$OUTPUT_ARTIFACT_PATH
 Load in data from python step 
 ```{r}
 
-conn = dbConnect(RSQLite::SQLite(), "sample.sqlite")
+conn = dbConnect(RSQLite::SQLite(), here("sample.sqlite"))
 
-patients = dbGetQuery(conn, "SELECT * FROM patients")
+patients = dbGetQuery(conn, "SELECT * FROM filtered_patients")
 
 ```
 
 Create output table using tbl_summary 
 ```{r}
 output_table = patients |>
-  select(AGE, IS_SMOKER, HOSPITALIZATION_COUNT) |>
+  select(AGE, GENDER, RACE, ETHNICITY, IS_SMOKER, HOSPITALIZATION_COUNT) |>
   tbl_summary() |>
   #convert to flex table for officer output 
   as_flex_table()
