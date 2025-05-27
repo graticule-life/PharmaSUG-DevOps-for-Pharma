@@ -1,5 +1,7 @@
 # PharmaSUG 2025 Sample
-Template repository for papermill pipelines.
+Template repository for research study pipelines using papermill for code written in Python and/or R.
+
+Presented at [PharmaSUG 2025](https://pharmasug.org/conferences/pharmasug-2025-us/): Integrating Collaborative Programming with Automated Traceability and Reproducibility in Pharma Studies and Real-World Data Projects by Adapting DevOps Best-Practices
 
 This repo contains the basic structure for papermill pipelines. The main execution file is `source/papermill.ipynb` which executes Python and R notebooks from `source/notebooks`.
 
@@ -14,6 +16,7 @@ This repo contains the basic structure for papermill pipelines. The main executi
 
 
 #### Updating R dependencies
+[Introduction to renv](https://rstudio.github.io/renv/articles/renv.html)
 
 1. Update the package you want to update
     ```r
