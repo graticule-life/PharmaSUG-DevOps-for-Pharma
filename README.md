@@ -5,6 +5,8 @@ Presented at [PharmaSUG 2025](https://pharmasug.org/conferences/pharmasug-2025-u
 
 This repo contains the basic structure for papermill pipelines. The main execution file is `source/papermill.ipynb` which executes Python and R notebooks from `source/notebooks`.
 
+The example takes a simulated cohort of patients, restricts the cohort to patients with a visit during the study period, and outputs a basic table 1 of patient characteristics. 
+
 
 <br>
 
